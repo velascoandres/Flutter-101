@@ -3,8 +3,15 @@ import 'package:whatsapp_clone/pages/camera_alt.dart';
 import 'package:whatsapp_clone/pages/chat_list.dart';
 import 'package:whatsapp_clone/pages/status_screen.dart';
 import 'package:whatsapp_clone/pages/calls_screen.dart';
+import 'package:whatsapp_clone/pages/contacts.dart';
+import 'package:camera/camera.dart';
+import 'dart:async';
 
-void main() {
+List<CameraDescription> cameras;
+
+// Asincrono
+Future<Null> main() async{
+  cameras = await availableCameras();
   runApp(new MaterialApp(
    home: MyApp(),
   ));
@@ -21,12 +28,16 @@ class MyApp extends StatelessWidget {
       accentColor: new Color(0xff25D366),
     ),
     debugShowCheckedModeBanner: false,
-    home: new WhatsAppClone(),
+    home: new WhatsAppClone(cameras: cameras,),
  );
  }
 }
 
 class WhatsAppClone extends StatefulWidget {
+  final List<CameraDescription> cameras;
+
+  WhatsAppClone({this.cameras});
+
   @override
   _WhatsAppCloneState createState() => new _WhatsAppCloneState();
  }
@@ -67,11 +78,23 @@ class _WhatsAppCloneState extends State<WhatsAppClone> with SingleTickerProvider
      body: new TabBarView(
        controller: _controller,
        children: <Widget>[
-         new Camera(),
+         new Camera(cameras: widget.cameras,),
          new ChatList(),
          new Status(),
          new Calls(),
        ],
+     ),
+     floatingActionButton: new FloatingActionButton(
+       backgroundColor: Theme.of(context).accentColor,
+       child: new Icon(
+         Icons.message,
+         color: Colors.white,
+       ),
+       onPressed: (){
+         var router = new MaterialPageRoute(
+           builder: (BuildContext context) => new Contacts());
+           Navigator.of(context).push(router);
+       },
      ), 
    );
   }
