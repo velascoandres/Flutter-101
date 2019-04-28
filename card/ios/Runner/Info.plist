@@ -41,5 +41,16 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+	<key>UIBackgroundModes</key>
+	<array>
+   <string>fetch</string>
+   <string>remote-notification</string>
+   
+   <key>NSPhotoLibraryUsageDescription</key>
+ <string>Explain why your app uses photo library</string>
+ 
+</array>
+
 </dict>
 </plist>

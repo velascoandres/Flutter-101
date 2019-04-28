@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:card/inmueble-model.dart';
-
+import 'package:card/widgets/widgets_img_lib.dart';
 
 class PublicacionItem extends StatelessWidget {
   final Publicacion publicacionModel;
@@ -8,34 +8,15 @@ class PublicacionItem extends StatelessWidget {
 
  @override
  Widget build(BuildContext context) {
-  return new Container(
-    margin: const EdgeInsets.only(
-      left: 12,
-      right: 12,
-      top: 12,
-      bottom: 0
-    ),
-    child: new Column(
+  return  new Column(
       children: <Widget>[
-      
-        new Container(
-          padding: const EdgeInsets.all(150.0),
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-            image: new NetworkImage(publicacionModel.portadaUrl),
-            fit: BoxFit.cover,
-          ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(5),
-              topRight:Radius.circular(5),
-            )
-          ),
+        //new Carusel(urls: publicacionModel.portadaUrl,),
+        new Divider(
+          height: 20,
         ),
-        
-        new Container(
-          padding: const EdgeInsets.only(
-            right: 25
-          ),
+        new ImageCarousel(urls: publicacionModel.portadaUrl),
+         new Container(
+           padding: const EdgeInsets.all(5),
           decoration: new BoxDecoration(
             color: Colors.black87,
             borderRadius: BorderRadius.only(
@@ -47,23 +28,22 @@ class PublicacionItem extends StatelessWidget {
             children: <Widget>[
               new Expanded(
                 child: new ListTile(
-                  title: new Text(publicacionModel.nombre, style: new TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                  subtitle: new Text('\$'+publicacionModel.precio.toString(), style: new TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                  title: new Text('\$'+publicacionModel.precio.toString(), style: new TextStyle(color: Colors.white,fontSize: 20),),
+                  subtitle: new Text(publicacionModel.nombre, style: new TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
                 ),
               ),
               new RaisedButton(
-                child: new Text("Informacion",style: new TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                child: new Text("Información",style: new TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
                 onPressed: (){},
                 color: Colors.redAccent,
               )
             ],
-          )
-
-        )
-        
-        
-      ],
-    ),
+            ) 
+         ), 
+          ], 
  );
  }
 }
+
+
+//1-1-12-2
