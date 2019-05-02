@@ -61,7 +61,7 @@ class _PrototipoState extends State<Prototipo> with SingleTickerProviderStateMix
   @override
   void initState(){
     super.initState();
-    controladorTap = new TabController(length: 3, vsync: this);
+    controladorTap = new TabController(length: 3, vsync: this); 
   }
 
   @override

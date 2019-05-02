@@ -1,39 +1,44 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 
 
 // Visor de imagenes para una galeria en especifico
 class VisorImagenes extends StatefulWidget {
-  final List<String> urls;
+    final List<String> urls;
+    final bool localStorage;
 
-  VisorImagenes({this.urls});
+
+  VisorImagenes({this.urls,this.localStorage});
 
   @override
   _VisorImagenesState createState() => new _VisorImagenesState();
+   
  }
  
 
 class _VisorImagenesState extends State<VisorImagenes> {
   @override
   Widget build(BuildContext context) {
-   return new Expanded(
+   return new Container(
+     height: 200,
        child: new ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: widget.urls.length,
               itemBuilder: (BuildContext context, int index) => new Container(
-                width: 500,
+                width: 200,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: new NetworkImage(widget.urls[index]),
+                    image: widget.localStorage?FileImage(new File(widget.urls[index]),scale: 0.3): new NetworkImage(widget.urls[index]),
                     fit: BoxFit.cover
                   )
                 ),
+                margin: const EdgeInsets.all(10),
               )
        
             ),
             );
-   
   }
 }
 
@@ -53,7 +58,9 @@ class _ImageCarouselState extends State<ImageCarousel> {
 
   // Armar una lista de NetWorkImages en base a la lista de URLS
   List<NetworkImage> _getNetImages(List<String> urls){
+    
     List <NetworkImage> arregloNetImage = [];
+    
     for( String url in urls){
         arregloNetImage.add(new NetworkImage(url));
     }
@@ -86,3 +93,5 @@ class _ImageCarouselState extends State<ImageCarousel> {
   }
 
 }
+
+

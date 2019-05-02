@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:card/widgets/widgets_img_lib.dart';
 
 
 class PublicacionCrear extends StatefulWidget {
@@ -11,22 +13,47 @@ class PublicacionCrear extends StatefulWidget {
  }
 class _PublicacionCrearState extends State<PublicacionCrear> {
 
-    Map<String, String> _rutasImagenesFachada;
-    String _nombreArchivo;
+    // Diccionarios de rutas
+    Map<String, String> _rutasImagenesFachada,_rutasImagenesParqueadero,_rutasImagenesInteriores; 
+    // Lista de rutas 
+    List<String> imagenesFachada,imagenesPargqueadero,imagenesInterioes;
+
 
     int _pasoActual = 0;
-
-    void _abrirExporadorArchivos() async{
+    
+    void _abrirExporadorArchivosFachada() async{
         _rutasImagenesFachada = null;
         _rutasImagenesFachada = await FilePicker.getMultiFilePath(type: FileType.IMAGE );
         if (!mounted) return;
         setState(() {
-          _nombreArchivo = _rutasImagenesFachada != null ? _rutasImagenesFachada.keys.toString() : '...';
-          print(_nombreArchivo);
+          //_nombreArchivo= _rutasImagenesFachada.values.toList().toString();
+            imagenesFachada = _rutasImagenesFachada.values.toList();
+        });
+    }
+    void _abrirExporadorArchivosInteriores() async{
+        _rutasImagenesInteriores = null;
+        _rutasImagenesInteriores = await FilePicker.getMultiFilePath(type: FileType.IMAGE );
+        if (!mounted) return;
+        setState(() {
+            imagenesInterioes = _rutasImagenesInteriores.values.toList();
+        });
+    }
+    void _abrirExporadorArchivosParqueadero() async{
+        _rutasImagenesParqueadero = null;
+        _rutasImagenesParqueadero = await FilePicker.getMultiFilePath(type: FileType.IMAGE );
+        if (!mounted) return;
+        setState(() {
+            imagenesPargqueadero = _rutasImagenesParqueadero.values.toList();
         });
     }
 
-
+    void _publicar(){
+      setState(() {
+        
+      });
+    }
+  
+  
   @override
   Widget build(BuildContext context) {
    return new Container(
@@ -35,7 +62,9 @@ class _PublicacionCrearState extends State<PublicacionCrear> {
          title: new Text("Publicar"),
        ),
        body: new Container(
-         child: new Stepper(
+         child: new ListView(
+           children: <Widget>[
+             new Stepper(physics:  ClampingScrollPhysics(),
            currentStep: this._pasoActual,
            steps: <Step>[
                   new Step(
@@ -48,11 +77,44 @@ class _PublicacionCrearState extends State<PublicacionCrear> {
                   ),
                   new Step(
                     title: new Text("Fotos de la Fachada"),
-                    content: new RaisedButton(
-                              onPressed:() =>  _abrirExporadorArchivos() ,
-                              child: Text("Subir imagenes"),
-                          )
+                    content:  new Column(
+                                children: <Widget>[
+                                  new RaisedButton(
+                                    onPressed: () =>  _abrirExporadorArchivosFachada(),
+                                    child: Text("Subir imagenes"),
+                                  ),
+                                   imagenesFachada!=null?new VisorImagenes(urls: imagenesFachada,localStorage: true,):new Text("No hay imagenes"),
+                                ],
+                              ),
+                          
                   ),
+                  new Step(
+                    title: new Text("Fotos del Parqueadero"),
+                    content:  new Column(
+                                children: <Widget>[
+                                  new RaisedButton(
+                                    onPressed: () =>  _abrirExporadorArchivosParqueadero(),
+                                    child: Text("Subir imagenes"),
+                                  ),
+                                   imagenesPargqueadero!=null?new VisorImagenes(urls: imagenesPargqueadero,localStorage: true,):new Text("No hay imagenes"),
+                                ],
+                              ),
+                          
+                  ),
+                  new Step(
+                    title: new Text("Fotos de los interiores"),
+                    content:  new Column(
+                                children: <Widget>[
+                                  new RaisedButton(
+                                    onPressed: () =>  _abrirExporadorArchivosInteriores(),
+                                    child: Text("Subir imagenes"),
+                                  ),
+                                   imagenesInterioes!=null?new VisorImagenes(urls: imagenesInterioes,localStorage: true,):new Text("No hay imagenes"),
+                                ],
+                              ),
+                          
+                  ),
+                  
            ],
            type: StepperType.vertical,
            onStepContinue: (){
@@ -70,9 +132,16 @@ class _PublicacionCrearState extends State<PublicacionCrear> {
                 _pasoActual = step;
              });
            },
+             ),
+             new RaisedButton(
+               child: new Text("Publicar"),
+               onPressed: (){_publicar();},
+              )   
+           ],
+         
+         ),
          ),
        ),
-     ),
   
    );
   }
