@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:path/path.dart';
 
 
 // Visor de imagenes para una galeria en especifico
@@ -17,9 +18,11 @@ class VisorImagenes extends StatefulWidget {
  }
  
 
+
 class _VisorImagenesState extends State<VisorImagenes> {
   @override
   Widget build(BuildContext context) {
+    
    return new Container(
      height: 200,
        child: new ListView.builder(
@@ -66,6 +69,9 @@ class _ImageCarouselState extends State<ImageCarousel> {
     }
     return arregloNetImage;
   }
+
+
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -93,5 +99,3 @@ class _ImageCarouselState extends State<ImageCarousel> {
   }
 
 }
-
-

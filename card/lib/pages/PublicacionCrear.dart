@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:card/servicios/publicacion.service.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:card/widgets/widgets_img_lib.dart';
@@ -48,8 +49,11 @@ class _PublicacionCrearState extends State<PublicacionCrear> {
     }
 
     void _publicar(){
+      
+      subir_imagenes(imagenesFachada);
+      //subir(imagenesFachada);
       setState(() {
-        
+        _rutasImagenesFachada = null;
       });
     }
   
