@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:card/servicios/publicacion.service.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -21,6 +20,8 @@ class _PublicacionCrearState extends State<PublicacionCrear> {
 
 
     int _pasoActual = 0;
+    bool esta_subiendo = false;
+    bool se_subio = false;
     
     void _abrirExporadorArchivosFachada() async{
         _rutasImagenesFachada = null;
@@ -49,12 +50,25 @@ class _PublicacionCrearState extends State<PublicacionCrear> {
     }
 
     void _publicar(){
-      
-      subir_imagenes(imagenesFachada);
-      //subir(imagenesFachada);
       setState(() {
-        _rutasImagenesFachada = null;
+        esta_subiendo = true;
       });
+      
+        subir_imagenes(imagenesFachada).then(
+          (resultado){
+              if(resultado){
+                setState(() {
+                  esta_subiendo = false;
+                  se_subio = true;
+                  _rutasImagenesFachada = null;
+                });
+                print("Todo OK");
+              }
+         }
+        );
+    
+      
+      
     }
   
   
@@ -136,11 +150,11 @@ class _PublicacionCrearState extends State<PublicacionCrear> {
                 _pasoActual = step;
              });
            },
-             ),
+             ), !esta_subiendo && !se_subio?
              new RaisedButton(
                child: new Text("Publicar"),
                onPressed: (){_publicar();},
-              )   
+              ): esta_subiendo && !se_subio ?new CircularProgressIndicator(): new Text("Publicacion registrada")   
            ],
          
          ),
